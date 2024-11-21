@@ -79,3 +79,7 @@ app.listen(PORT, () => {
     mongoose.connect(URI);
     mongoose.connection.on('connected', () => console.log('Connected to MongoDB'));
 });
+
+app.use(express.json());
+
+app.use("/", authRoute);

@@ -21,8 +21,14 @@ const UsersSchema = new Schema({
     },
 })
 
-UsersSchema.pre("save", async () => {
+UsersSchema.pre("save", async function (next) {
+    console.log("Password before hashing:", this.password);
+    if (!this.isModified("password")) return next();
     this.password = await bcrypt.hash(this.password, 12);
+    console.log("Password after hashing:", this.password);
+    next();
 });
+
+
 
 module.exports = { UsersSchema };

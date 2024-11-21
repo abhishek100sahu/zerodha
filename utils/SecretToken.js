@@ -1,8 +1,12 @@
 require("dotenv").config();
 const jwt = require("jsonwebtoken");
 
-module.exports.createSecretToken = (id) => {
-    return jwt.sign({ id }, process.env.TOKEN_KEY, {
-        expiresIn: 3 * 24 * 60 * 60,
-    });
+const createSecretToken = (userId) => {
+    const secret = process.env.JWT_SECRET || "defaultSecretKey"; // Use a secure secret in production
+    if (!secret) {
+        throw new Error("JWT_SECRET is not defined");
+    }
+    return jwt.sign({ id: userId }, secret, { expiresIn: "1d" });
 };
+
+module.exports = { createSecretToken };
